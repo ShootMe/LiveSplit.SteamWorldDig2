@@ -7,3 +7,5 @@ Autosplitter for the game SteamWorld Dig 2
 - Place the LiveSplit.SteamWorldDig2.dll inside the LiveSplit/Components folder
 - Open LiveSplit, edit your layout, add Control -> SteamWorld Dig 2 Autosplitter
 - Then set it up to match the splits you want to split on
+- The autosplitter will auto start when entering the game
+- And it will auto split on when entering the credits at the end aithout having to specify a split in the layout settings
