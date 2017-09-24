@@ -17,6 +17,9 @@ namespace LiveSplit.SteamWorldDig2 {
 		private SteamWorldMemory mem;
 		private int currentSplit = -1, state = 0, lastLogCheck = 0;
 		private bool hasLog = false;
+		private int sameGameTime = 0;
+		private double lastGameTime;
+		private string previousArea;
 		private SteamWorldSettings settings;
 		private HashSet<SplitName> splitsDone = new HashSet<SplitName>();
 		private static string LOGFILE = "_SteamWorld2.log";
@@ -54,10 +57,14 @@ namespace LiveSplit.SteamWorldDig2 {
 		private void HandleSplits() {
 			bool shouldSplit = false;
 			string currentArea = mem.Area();
+			if (string.IsNullOrEmpty(currentArea)) {
+				currentArea = previousArea;
+			}
+
 			PointF pos = mem.Position();
+			double gameTime = mem.GameTime();
 
 			if (currentSplit == -1) {
-				double gameTime = mem.GameTime();
 				shouldSplit = currentArea == "west_desert" && gameTime > 0 && gameTime < 2 && PositionNear(pos, 2340, 5910);
 			} else if (Model.CurrentState.CurrentPhase == TimerPhase.Running) {
 				if (currentSplit + 1 < Model.CurrentState.Run.Count) {
@@ -94,11 +101,21 @@ namespace LiveSplit.SteamWorldDig2 {
 							break;
 						}
 					}
-				} else if (currentArea == "el_machino" && pos.X > -0.1 && pos.X < 0.1 && pos.Y > -0.1 && pos.Y < 0.1) {
+				} else if (previousArea == "el_machino_aftermath" && currentArea == "el_machino") {
 					shouldSplit = true;
 				}
+
+				if (gameTime == lastGameTime) {
+					sameGameTime++;
+				} else {
+					sameGameTime = 0;
+				}
+				lastGameTime = gameTime;
+
+				Model.CurrentState.IsGameTimePaused = sameGameTime > 3;
 			}
 
+			previousArea = currentArea;
 			HandleSplit(shouldSplit, false);
 		}
 		private bool PositionNear(PointF pos, float x, float y) {
