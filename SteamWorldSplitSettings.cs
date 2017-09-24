@@ -31,7 +31,7 @@ namespace LiveSplit.SteamWorldDig2 {
 					return split;
 				}
 			}
-			return SplitName.SprintHydraulics;
+			return SplitName.ManualSplit;
 		}
 		private void picHandle_MouseMove(object sender, MouseEventArgs e) {
 			if (!isDragging) {

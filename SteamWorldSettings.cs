@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveSplit.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,12 +10,14 @@ namespace LiveSplit.SteamWorldDig2 {
 	public partial class SteamWorldSettings : UserControl {
 		public List<SplitName> Splits { get; private set; }
 		private bool isLoading;
-		public SteamWorldSettings() {
+		private TimerModel model;
+		public SteamWorldSettings(TimerModel model) {
 			isLoading = true;
 			InitializeComponent();
 
 			Splits = new List<SplitName>();
 			isLoading = false;
+			this.model = model;
 		}
 
 		public bool HasSplit(SplitName split) {
@@ -32,13 +35,15 @@ namespace LiveSplit.SteamWorldDig2 {
 				flowMain.Controls.RemoveAt(i);
 			}
 
-			foreach (SplitName split in Splits) {
+			for (int i = 0; i < Splits.Count; i++) {
+				SplitName split = Splits[i];
 				MemberInfo info = typeof(SplitName).GetMember(split.ToString())[0];
 				DescriptionAttribute description = (DescriptionAttribute)info.GetCustomAttributes(typeof(DescriptionAttribute), false)[0];
 
 				SteamWorldSplitSettings setting = new SteamWorldSplitSettings();
 				setting.cboName.DataSource = GetAvailableSplits();
 				setting.cboName.Text = description.Description;
+				SetSplitDescription(setting, i);
 				AddHandlers(setting);
 
 				flowMain.Controls.Add(setting);
@@ -112,6 +117,7 @@ namespace LiveSplit.SteamWorldDig2 {
 			List<string> splitNames = GetAvailableSplits();
 			setting.cboName.DataSource = splitNames;
 			setting.cboName.Text = splitNames[0];
+			SetSplitDescription(setting, Splits.Count);
 			AddHandlers(setting);
 
 			flowMain.Controls.Add(setting);
@@ -148,7 +154,7 @@ namespace LiveSplit.SteamWorldDig2 {
 			e.Effect = DragDropEffects.Move;
 		}
 		private void flowMain_DragOver(object sender, DragEventArgs e) {
-			SteamWorldSplitSettings data = (SteamWorldSplitSettings)e.Data.GetData(typeof(SteamWorldSplitSettings));
+			SteamWorldSplitSettings setting = (SteamWorldSplitSettings)e.Data.GetData(typeof(SteamWorldSplitSettings));
 			FlowLayoutPanel destination = (FlowLayoutPanel)sender;
 			Point p = destination.PointToClient(new Point(e.X, e.Y));
 			var item = destination.GetChildAtPoint(p);
@@ -157,11 +163,20 @@ namespace LiveSplit.SteamWorldDig2 {
 				e.Effect = DragDropEffects.None;
 			} else {
 				e.Effect = DragDropEffects.Move;
-				int oldIndex = destination.Controls.GetChildIndex(data);
+				int oldIndex = destination.Controls.GetChildIndex(setting);
 				if (oldIndex != index) {
-					destination.Controls.SetChildIndex(data, index);
+					destination.Controls.SetChildIndex(setting, index);
+					SetSplitDescription(setting, index - 1);
+					SetSplitDescription((SteamWorldSplitSettings)item, oldIndex - 1);
 					destination.Invalidate();
 				}
+			}
+		}
+		private void SetSplitDescription(SteamWorldSplitSettings setting, int index) {
+			if (model != null && index + 1 < model.CurrentState.Run.Count) {
+				setting.lblSplit.Text = (index + 1).ToString() + ": " + model.CurrentState.Run[index].Name;
+			} else {
+				setting.lblSplit.Text = "";
 			}
 		}
 	}

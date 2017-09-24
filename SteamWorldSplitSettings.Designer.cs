@@ -29,13 +29,14 @@
 			this.cboName = new System.Windows.Forms.ComboBox();
 			this.ToolTips = new System.Windows.Forms.ToolTip(this.components);
 			this.picHandle = new System.Windows.Forms.PictureBox();
+			this.lblSplit = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.picHandle)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btnRemove
 			// 
 			this.btnRemove.Image = ((System.Drawing.Image)(resources.GetObject("btnRemove.Image")));
-			this.btnRemove.Location = new System.Drawing.Point(274, 2);
+			this.btnRemove.Location = new System.Drawing.Point(238, 2);
 			this.btnRemove.Name = "btnRemove";
 			this.btnRemove.Size = new System.Drawing.Size(26, 23);
 			this.btnRemove.TabIndex = 4;
@@ -47,7 +48,7 @@
 			this.cboName.FormattingEnabled = true;
 			this.cboName.Location = new System.Drawing.Point(22, 3);
 			this.cboName.Name = "cboName";
-			this.cboName.Size = new System.Drawing.Size(246, 21);
+			this.cboName.Size = new System.Drawing.Size(210, 21);
 			this.cboName.TabIndex = 0;
 			this.cboName.SelectedIndexChanged += new System.EventHandler(this.cboName_SelectedIndexChanged);
 			// 
@@ -63,19 +64,30 @@
 			this.picHandle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picHandle_MouseDown);
 			this.picHandle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picHandle_MouseMove);
 			// 
-			// HollowKnightSplitSettings
+			// lblSplit
+			// 
+			this.lblSplit.AutoSize = true;
+			this.lblSplit.Location = new System.Drawing.Point(270, 6);
+			this.lblSplit.Name = "lblSplit";
+			this.lblSplit.Size = new System.Drawing.Size(98, 13);
+			this.lblSplit.TabIndex = 6;
+			this.lblSplit.Text = "1: Sprint Hydraulics";
+			// 
+			// SteamWorldSplitSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
+			this.Controls.Add(this.lblSplit);
 			this.Controls.Add(this.btnRemove);
 			this.Controls.Add(this.cboName);
 			this.Controls.Add(this.picHandle);
 			this.Margin = new System.Windows.Forms.Padding(0);
-			this.Name = "HollowKnightSplitSettings";
-			this.Size = new System.Drawing.Size(310, 28);
+			this.Name = "SteamWorldSplitSettings";
+			this.Size = new System.Drawing.Size(486, 28);
 			((System.ComponentModel.ISupportInitialize)(this.picHandle)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -84,5 +96,6 @@
 		public System.Windows.Forms.ComboBox cboName;
 		private System.Windows.Forms.ToolTip ToolTips;
 		private System.Windows.Forms.PictureBox picHandle;
+		public System.Windows.Forms.Label lblSplit;
 	}
 }
