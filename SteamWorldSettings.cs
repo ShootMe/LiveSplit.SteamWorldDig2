@@ -85,7 +85,7 @@ namespace LiveSplit.SteamWorldDig2 {
 					SteamWorldSplitSettings setting = (SteamWorldSplitSettings)c;
 					if (!string.IsNullOrEmpty(setting.cboName.Text)) {
 						SplitName split = SteamWorldSplitSettings.GetSplitName(setting.cboName.Text);
-						Splits.Add(split);
+						Splits.Insert(0, split);
 					}
 					SetSplitDescription(setting, i - 1);
 				}
