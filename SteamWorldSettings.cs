@@ -63,7 +63,8 @@ namespace LiveSplit.SteamWorldDig2 {
 		public void btnRemove_Click(object sender, EventArgs e) {
 			for (int i = flowMain.Controls.Count - 1; i > 0; i--) {
 				if (flowMain.Controls[i].Contains((Control)sender)) {
-					RemoveHandlers((SteamWorldSplitSettings)((Button)sender).Parent);
+					SteamWorldSplitSettings setting = (SteamWorldSplitSettings)((Button)sender).Parent;
+					RemoveHandlers(setting);
 
 					flowMain.Controls.RemoveAt(i);
 					break;
@@ -78,13 +79,15 @@ namespace LiveSplit.SteamWorldDig2 {
 			if (isLoading) return;
 
 			Splits.Clear();
-			foreach (Control c in flowMain.Controls) {
+			for (int i = flowMain.Controls.Count - 1; i >= 0; i--) {
+				Control c = flowMain.Controls[i];
 				if (c is SteamWorldSplitSettings) {
 					SteamWorldSplitSettings setting = (SteamWorldSplitSettings)c;
 					if (!string.IsNullOrEmpty(setting.cboName.Text)) {
 						SplitName split = SteamWorldSplitSettings.GetSplitName(setting.cboName.Text);
 						Splits.Add(split);
 					}
+					SetSplitDescription(setting, i - 1);
 				}
 			}
 		}
